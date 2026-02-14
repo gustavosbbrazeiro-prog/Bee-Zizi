@@ -1,0 +1,27 @@
+{
+  "name": "Bee & Zizi",
+  "short_name": "Bee&Zizi",
+  "description": "Um site-presente romântico com cartinhas, galeria, playlist, jogos e conquistas.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#1a0f1c",
+  "theme_color": "#b5179e",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

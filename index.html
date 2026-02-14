@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bee & Zizi — Nosso Cantinho</title>
+  <meta name="description" content="Um site romântico com cartinhas, minijogos, galeria e conquistas." />
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="app.js"></script>
+  <!--
+    🔧 PERSONALIZE AQUI (HTML):
+    1) Títulos/legendas de seções → também podem ser geridos por data/strings.json (ver app.js→applyStrings).
+    2) Navegação/topbar: adicione/ordene itens no <nav> conforme necessário.
+    3) Estruturas SEMÂNTICAS + ARIA já aplicadas; mantenha id's pois o JS usa para seleção.
+  -->
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <header class="topbar" role="banner">
+    <div class="brand">
+      <!-- Troque o ícone/marca conforme desejar -->
+      <img src="assets/icons/bee.svg" alt="Abelhinha" width="28" height="28" />
+      <strong>Bee & Zizi</strong>
+    </div>
+    <nav aria-label="Principal">
+      <ul class="nav">
+        <li><a href="#bemvindo" data-i18n="nav.home">Início</a></li>
+        <li><a href="#cartinhas" data-i18n="nav.letters">Cartinhas</a></li>
+        <li><a href="#galeria" data-i18n="nav.gallery">Galeria</a></li>
+        <li><a href="#playlist" data-i18n="nav.playlist">Playlist</a></li>
+        <li><a href="#jogos" data-i18n="nav.games">Minijogos</a></li>
+        <li><a href="#loja" data-i18n="nav.shop">Loja</a></li>
+        <li><a href="#conquistas" data-i18n="nav.achievements">Conquistas</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="conteudo">
+    <!-- HERO -->
+    <section id="bemvindo" class="section hero" aria-labelledby="titulo-hero">
+      <div class="hero-inner">
+        <h1 id="titulo-hero">Oi, <span id="nomeZizi">Zizi</span> 💛</h1>
+        <p>Bem-vinda ao nosso cantinho — feito com amor pelo <strong id="nomeBee">Bee</strong>.</p>
+
+        <!-- KPIs -->
+        <div class="stats">
+          <div class="stat">
+            <img src="assets/icons/heart.svg" alt="Moedinhas" />
+            <div>
+              <div class="stat-label">Moedinhas</div>
+              <div class="stat-value" id="lovePoints">0</div>
+              <div class="stat-sub" id="dailyCapStatus">0/120 hoje</div>
+            </div>
+          </div>
+          <div class="stat">
+            <img src="assets/icons/star.svg" alt="Estrelinhas" />
+            <div>
+              <div class="stat-label">Sequência diária</div>
+              <div class="stat-value" id="streak">0</div>
+            </div>
+          </div>
+          <div class="stat">
+            <img src="assets/icons/bee.svg" alt="Abelha" />
+            <div>
+              <div class="stat-label">Conquistas</div>
+              <div class="stat-value" id="achievementsCount">0</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-actions">
+          <button id="btnCheckin" class="btn primary" data-i18n="hero.checkin">Check-in diário </button>
+          <button id="btnSurpresa" class="btn ghost" data-i18n="hero.surprise">Surpresinha ✨</button>
+          <button id="btnRaspadinha" class="btn ghost" data-i18n="hero.scratch">Raspadinha 🎟️</button>
+
+          <div class="theme-actions">
+            <!-- 🔧 PERSONALIZE: botão de alternância rápido Claro↔Romântico -->
+            <button id="btnThemeToggle" class="btn sm" title="Alternar entre Claro e Romântico">🌗 Modo Romântico</button>
+            <!-- 🔧 PERSONALIZE: seletor rápido de temas → opções adicionais podem ser escondidas/mostradas via Loja -->
+            <label class="theme-quick" aria-label="Selecionar tema rápido">
+              <span>🎨</span>
+              <select id="themeQuick">
+                <option value="padrao">Claro</option>
+                <option value="romantico">Romântico</option>
+                <option value="noite">Noite Estrelada</option>
+                <option value="neon">Neon</option>
+                <option value="girassol">Girassol</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <!-- Mini Central de Datas -->
+        <div class="dates-center">
+          <div class="dates-head">
+            <strong data-i18n="dates.title">Próximas datas</strong>
+            <button id="btnAddDate" class="btn sm" data-i18n="dates.add">Adicionar data</button>
+          </div>
+          <ul id="datesList" class="dates-list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CARTINHAS -->
+    <section id="cartinhas" class="section" aria-labelledby="titulo-cartinhas">
+      <div class="section-head">
+        <h2 id="titulo-cartinhas" data-i18n="sections.letters">Cartinhas</h2>
+        <p class="section-sub" data-i18n="sections.letters_sub">Algumas coisas escritas aqui e outras ali. ❤️</p>
+      </div>
+      <div class="cards" id="cardsContainer" aria-live="polite"></div>
+    </section>
+
+    <!-- GALERIA -->
+    <section id="galeria" class="section" aria-labelledby="titulo-galeria">
+      <div class="section-head">
+        <h2 id="titulo-galeria" data-i18n="sections.gallery">Galeria</h2>
+        <p class="section-sub" data-i18n="sections.gallery_sub">Arraste fotos aqui ou clique para adicionar. Clique em uma foto para ampliar.</p>
+      </div>
+      <div class="gallery-tools">
+        <input type="file" id="galleryInput" accept="image/*" multiple style="display:none" />
+        <button class="btn sm" id="btnAddPhotos" data-i18n="gallery.add">Adicionar fotos</button>
+        <button class="btn sm ghost" id="btnClearPhotos" data-i18n="gallery.clear">Limpar galeria</button>
+      </div>
+      <div class="gallery droppable" id="galleryGrid" aria-live="polite"></div>
+    </section>
+
+    <!-- PLAYLIST -->
+    <section id="playlist" class="section" aria-labelledby="titulo-playlist">
+      <div class="section-head">
+        <h2 id="titulo-playlist" data-i18n="sections.playlist">Playlist</h2>
+        <p class="section-sub" data-i18n="sections.playlist_sub">Tocador local com suas .mp3 em /assets/music/</p>
+      </div>
+      <div class="playlist-embed" id="playlistEmbed" role="region" aria-label="Player de áudio">
+        <div id="playerBox">
+          <audio id="audioPlayer" preload="metadata" controls></audio>
+          <div id="trackInfo" class="muted" style="margin-top:.4rem"></div>
+          <ul id="trackList" class="nav" style="padding-left:0"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- JOGOS -->
+    <section id="jogos" class="section" aria-labelledby="titulo-jogos">
+      <div class="section-head">
+        <h2 id="titulo-jogos" data-i18n="sections.games">Minigames</h2>
+        <p class="section-sub" data-i18n="sections.games_sub">Divirta-se e ganhe moedinhas (até o limite diário).</p>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Seleção de minijogos">
+        <button role="tab" class="tab active" aria-selected="true" aria-controls="jogo-memory" id="tab-memory">Memória</button>
+        <button role="tab" class="tab" aria-selected="false" aria-controls="jogo-digite" id="tab-digite">Digite com Amor</button>
+        <button role="tab" class="tab" aria-selected="false" aria-controls="jogo-coracoes" id="tab-coracoes">Caça-Corações</button>
+        <button role="tab" class="tab" aria-selected="false" aria-controls="jogo-corrida" id="tab-corrida">Corrida das Abelhinhas</button>
+      </div>
+
+      <div class="tabpanels">
+        <!-- Memória -->
+        <section id="jogo-memory" role="tabpanel" aria-labelledby="tab-memory" class="panel active">
+          <div class="panel-head">
+            <h3>Jogo da Memória</h3>
+            <div class="panel-actions">
+              <span class="record">Melhor: <strong id="memoryBest">–</strong></span>
+              <button class="btn sm" id="btnMemoryNovo">Novo Jogo</button>
+            </div>
+          </div>
+          <div id="memoryGrid" class="memory-grid" aria-label="Tabuleiro de memória"></div>
+          <div class="game-info">
+            <span>Movimentos: <strong id="memoryMoves">0</strong></span>
+            <span>Pares: <strong id="memoryPairs">0</strong>/8</span>
+          </div>
+        </section>
+
+        <!-- Digite com Amor -->
+        <section id="jogo-digite" role="tabpanel" aria-labelledby="tab-digite" class="panel">
+          <div class="panel-head">
+            <h3>Digite com Amor</h3>
+            <div class="panel-actions">
+              <span class="record">Recorde: <strong id="typingBest">–</strong>%</span>
+              <button class="btn sm" id="btnTypingNovo">Nova Frase</button>
+            </div>
+          </div>
+          <p id="typingPhrase" class="typing-phrase">Clique em "Nova Frase" para começar 💬</p>
+          <input id="typingInput" class="typing-input" type="text" placeholder="Digite aqui..." aria-label="Área para digitar a frase" />
+          <div class="game-info">
+            <span>Tempo: <strong id="typingTime">0</strong>s</span>
+            <span>Precisão: <strong id="typingAcc">0</strong>%</span>
+          </div>
+        </section>
+
+        <!-- Caça-Corações -->
+        <section id="jogo-coracoes" role="tabpanel" aria-labelledby="tab-coracoes" class="panel">
+          <div class="panel-head">
+            <h3>Caça-Corações</h3>
+            <div class="panel-actions">
+              <span class="record">Recorde: <strong id="catchBest">0</strong></span>
+              <button class="btn sm" id="btnCatchStart">Iniciar (15s)</button>
+            </div>
+          </div>
+          <div id="catchArena" class="catch-arena" aria-label="Arena de corações"></div>
+          <div class="game-info">
+            <span>Apanhados: <strong id="catchCount">0</strong></span>
+            <span>Em jogo: <strong id="catchRemaining">0</strong></span>
+          </div>
+        </section>
+
+        <!-- Corrida das Abelhinhas -->
+        <section id="jogo-corrida" role="tabpanel" aria-labelledby="tab-corrida" class="panel">
+          <div class="panel-head">
+            <h3>Corrida das Abelhinhas</h3>
+            <div class="panel-actions">
+              <span class="record">Recorde: <strong id="runBest">0</strong></span>
+              <button class="btn sm" id="btnRunStart">Iniciar (30s)</button>
+            </div>
+          </div>
+          <div id="runArena" class="run-arena" aria-label="Pista de corrida" tabindex="0"></div>
+          <!-- Controles mobile aparecem quando houver toque -->
+          <div class="run-controls" id="runControls" aria-hidden="true">
+            <button class="btn sm" id="runUp">↑</button>
+            <button class="btn sm" id="runDown">↓</button>
+          </div>
+          <div class="game-info">
+            <span>Pontuação: <strong id="runScore">0</strong></span>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- LOJA -->
+    <section id="loja" class="section" aria-labelledby="titulo-loja">
+      <div class="section-head">
+        <h2 id="titulo-loja" data-i18n="sections.shop">Loja de Mimos</h2>
+        <p class="section-sub" data-i18n="sections.shop_sub">Troque moedinhas por temas, stickers e cartinhas.</p>
+      </div>
+      <div class="shop" id="shopGrid"></div>
+    </section>
+
+    <!-- CONQUISTAS -->
+    <section id="conquistas" class="section" aria-labelledby="titulo-conquistas">
+      <div class="section-head">
+        <h2 id="titulo-conquistas" data-i18n="sections.achievements">Conquistas</h2>
+        <p class="section-sub" data-i18n="sections.achievements_sub">Desbloqueie metas e ganhe recompensas.</p>
+      </div>
+      <div id="achievementsGrid" class="achievements steam"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Feito com 🐝 + 💛 por <span id="footerBee">Bee</span> para <span id="footerZizi">Zizi</span>.</p>
+  </footer>
+
+  <!-- Abelhinhas de fundo (site inteiro) -->
+  <div id="beeLayer" aria-hidden="true"></div>
+
+  <!-- Modal Genérico acessível -->
+  <div class="modal" id="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-dialog" role="document">
+      <header class="modal-header">
+        <h3 id="modalTitle">Título</h3>
+        <button class="icon-button" title="Fechar" aria-label="Fechar" data-close>×</button>
+      </header>
+      <div class="modal-body" id="modalBody"></div>
+      <footer class="modal-footer">
+        <button class="btn primary" data-close>Fechar</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="confetti" aria-hidden="true"></div>
+</body>
+</html>
